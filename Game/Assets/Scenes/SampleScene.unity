@@ -324,11 +324,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Cube: {fileID: 1772242169337943012, guid: 78002ed81424af040bd7f663271cd9c6, type: 3}
-  Width: 32
-  nw: 0
-  ne: 0
-  sw: 0
-  se: 0
+  game_path: D:/Unity_Projects/Chess_Game/Game
+  world_name: World_1
 --- !u!4 &2105888916
 Transform:
   m_ObjectHideFlags: 0

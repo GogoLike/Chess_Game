@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,30 +8,16 @@ using UnityEngine;
 public class CubeWorldScript : MonoBehaviour
 {
     private int[,] heightMap;
-    private int[,] fsquare;
     public GameObject Cube;
-    public int Width;
+    private int Width=4;
     private int width;
-    private int logrange;
-    private System.Random rand;
-    public int nw, ne, sw, se;
-
-    private void SetFSquare(int nw, int ne, int sw, int se)
-    {
-        fsquare = new int[2, 2];
-        if (nw == 0) nw = 1;
-        if (ne == 0) ne = 1;
-        if (sw == 0) sw = 1;
-        if (se == 0) se = 1;
-        fsquare[0, 0] = nw;
-        fsquare[0, 1] = ne;
-        fsquare[1, 0] = sw;
-        fsquare[1, 1] = se;
-    }
+    public string game_path = @"D:/Unity_Projects/Chess_Game/Game";
+    public string world_name;
 
     // Start is called before the first frame update
     void Start()
     {
+        ReadWorld(world_name);
         GenerateWorld();
     }
 
@@ -40,6 +27,22 @@ public class CubeWorldScript : MonoBehaviour
         
     }
 
+    private void ReadWorld(string name)
+    {
+        string path = game_path + @"/Assets/Worlds/" + name + @".txt";
+        using (StreamReader sr = new StreamReader(path, System.Text.Encoding.Default))
+        {
+            string line1;
+            while ((line1 = sr.ReadLine()) != null)
+            {
+                string[] line = line1.Split('=');
+                Debug.Log(line[0]);
+                Debug.Log(line[1]);
+            }
+        }
+
+    }
+
     private void GenerateWorld()
     {
         if (Math.Log(Width, 2) % 1 != 0)
@@ -47,22 +50,15 @@ public class CubeWorldScript : MonoBehaviour
             Debug.Log("Width is not x^2");
             return;
         }
-        logrange = (int)Math.Log(Width, 2);
-        rand = new System.Random();
-        SetFSquare(nw, ne, se, se);
         width = Width + 1;
         heightMap = new int[width, width];
         for (int i1 = 0; i1 < width; i1++) 
         {
             for (int k1 = 0; k1 < width; k1++)
             {
-                heightMap[i1, k1] = 1 + rand.Next(0, 10);
+                heightMap[i1, k1] = 1;
             }
         }
-        heightMap[0, 0] = fsquare[0, 0];
-        heightMap[0, width - 1] = fsquare[0, 1];
-        heightMap[width - 1, 0] = fsquare[1, 0];
-        heightMap[width - 1, width - 1] = fsquare[1, 1];
         for (int x = 0; x<width; x++)
         {
             for(int z = 0; z<width; z++)
